@@ -22,7 +22,7 @@ namespace BugTracker.Models
 
         [NotMapped]
         [DisplayName("Full Name")]
-        public string FullName { get { return $"(FirstName) (LastName)";}  }
+        public string FullName { get { return $"(FirstName) (LastName)"; } }
 
         [NotMapped]
         [DataType(DataType.Upload)]
@@ -35,5 +35,12 @@ namespace BugTracker.Models
 
         [Display(Name = "File Extension")]
         public string AvatarContentType { get; set; }
+
+        public int CompanyId { get; set; }
+
+        public virtual Company Company { get; set; }
+
+        public virtual ICollection<Project> Projects { get; set; } 
+
     }
 }

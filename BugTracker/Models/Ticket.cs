@@ -9,6 +9,8 @@ namespace BugTracker.Models
 {
     public class Ticket
     {
+        public int Id { get; set; }
+
         [Required]
         [StringLength(50)]
         [DisplayName("Title")]

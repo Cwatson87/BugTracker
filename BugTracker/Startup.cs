@@ -1,5 +1,7 @@
 using BugTracker.Data;
 using BugTracker.Models;
+using BugTracker.Services;
+using BugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,6 +40,9 @@ namespace BugTracker
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
+            //Custom Services
+            services.AddScoped<IBTRolesService, BTRoleService>();
+            services.AddScoped<IBTCompanyInfoService, BTCompanyInfoService>();
 
             services.AddControllersWithViews();
         }

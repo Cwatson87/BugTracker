@@ -64,27 +64,27 @@ public static class DataUtility
         await dbContextSvc.Database.MigrateAsync();
 
         //Custom  Bug Tracker Seed Methods
-        await SeedRolesAsync();
-        await SeedDefaultCompaniesAsync();
-        await SeedDefaultUsersAsync();
-        await SeedDemoUsersAsync();
-        await SeedDefaultTicketTypeAsync();
-        await SeedDefaultTicketStatusAsync();
-        await SeedDefaultTicketPriorityAsync();
-        await SeedDefaultProjectPriorityAsync();
-        await SeedDefautProjectsAsync();
-        await SeedDefautTicketsAsync();
+        await SeedRolesAsync(roleManagerSvc);
+        await SeedDefaultCompaniesAsync(dbContextSvc);
+        await SeedDefaultUsersAsync(userManagerSvc);
+        await SeedDemoUsersAsync(userManagerSvc);
+        await SeedDefaultTicketTypeAsync(dbContextSvc);
+        await SeedDefaultTicketStatusAsync(dbContextSvc);
+        await SeedDefaultTicketPriorityAsync(dbContextSvc);
+        await SeedDefaultProjectPriorityAsync(dbContextSvc);
+        await SeedDefautProjectsAsync(dbContextSvc);
+        await SeedDefautTicketsAsync(dbContextSvc);
     }
 
 
     public static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
     {
         //Seed Roles
-        await roleManager.CreateAsync(new IdentityRole(Roles.Admin.ToString()));
-        await roleManager.CreateAsync(new IdentityRole(Roles.ProjectManager.ToString()));
-        await roleManager.CreateAsync(new IdentityRole(Roles.Developer.ToString()));
-        await roleManager.CreateAsync(new IdentityRole(Roles.Submitter.ToString()));
-        await roleManager.CreateAsync(new IdentityRole(Roles.DemoUser.ToString()));
+        await roleManager.CreateAsync(new IdentityRole(BTRoles.Admin.ToString()));
+        await roleManager.CreateAsync(new IdentityRole(BTRoles.ProjectManager.ToString()));
+        await roleManager.CreateAsync(new IdentityRole(BTRoles.Developer.ToString()));
+        await roleManager.CreateAsync(new IdentityRole(BTRoles.Submitter.ToString()));
+        await roleManager.CreateAsync(new IdentityRole(BTRoles.DemoUser.ToString()));
     }
 
     public static async Task SeedDefaultCompaniesAsync(ApplicationDbContext context)
@@ -92,11 +92,11 @@ public static class DataUtility
         try
         {
             IList<Company> defaultcompanies = new List<Company>() {
-                    new Company() { Name = "Company1", Description="This is default Company 1" },
-                    new Company() { Name = "Company2", Description="This is default Company 2" },
-                    new Company() { Name = "Company3", Description="This is default Company 3" },
-                    new Company() { Name = "Company4", Description="This is default Company 4" },
-                    new Company() { Name = "Company5", Description="This is default Company 5" }
+                    new Company() { Name = "Company1", description="This is default Company 1" },
+                    new Company() { Name = "Company2", description="This is default Company 2" },
+                    new Company() { Name = "Company3", description="This is default Company 3" },
+                    new Company() { Name = "Company4", description="This is default Company 4" },
+                    new Company() { Name = "Company5", description="This is default Company 5" }
                 };
 
             var dbCompanies = context.Companies.Select(c => c.Name).ToList();
@@ -116,6 +116,7 @@ public static class DataUtility
             Console.WriteLine("Error Seeding Companies.");
             Console.WriteLine(ex.Message);
             Console.WriteLine("***********************************");
+
             throw;
         }
     }
@@ -124,11 +125,12 @@ public static class DataUtility
     {
         try
         {
-            IList<BugTracker.Models.ProjectPriority> projectPriorities = new List<ProjectPriority>() {
-                                                    new ProjectPriority() { Name = BTProjectPriority.Low.ToString() },
-                                                    new ProjectPriority() { Name = BTProjectPriority.Medium.ToString() },
-                                                    new ProjectPriority() { Name = BTProjectPriority.High.ToString() },
-                                                    new ProjectPriority() { Name = BTProjectPriority.Urgent.ToString() },
+            IList<BugTracker.Models.ProjectPriority> projectPriorities = new List<ProjectPriority>()
+            {
+                 new ProjectPriority() { Name = BTProjectPriority.Low.ToString() },
+                 new ProjectPriority() { Name = BTProjectPriority.Medium.ToString() },
+                 new ProjectPriority() { Name = BTProjectPriority.High.ToString() },
+                 new ProjectPriority() { Name = BTProjectPriority.Urgent.ToString() },
                 };
 
             var dbProjectPriorities = context.ProjectPriorities.Select(c => c.Name).ToList();
@@ -239,7 +241,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Admin.ToString());
             }
         }
         catch (Exception ex)
@@ -267,7 +269,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Admin.ToString());
             }
         }
         catch (Exception ex)
@@ -296,7 +298,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.ProjectManager.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.ProjectManager.ToString());
             }
         }
         catch (Exception ex)
@@ -325,7 +327,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.ProjectManager.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.ProjectManager.ToString());
             }
         }
         catch (Exception ex)
@@ -354,7 +356,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Developer.ToString());
             }
         }
         catch (Exception ex)
@@ -383,7 +385,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Developer.ToString());
             }
         }
         catch (Exception ex)
@@ -412,7 +414,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Developer.ToString());
             }
         }
         catch (Exception ex)
@@ -441,7 +443,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Developer.ToString());
             }
         }
         catch (Exception ex)
@@ -470,7 +472,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Developer.ToString());
             }
         }
         catch (Exception ex)
@@ -498,7 +500,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Developer.ToString());
             }
         }
         catch (Exception ex)
@@ -526,7 +528,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Submitter.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Submitter.ToString());
             }
         }
         catch (Exception ex)
@@ -555,7 +557,7 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Submitter.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Submitter.ToString());
             }
         }
         catch (Exception ex)
@@ -587,8 +589,8 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Admin.ToString());
-                await userManager.AddToRoleAsync(defaultUser, Roles.DemoUser.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Admin.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.DemoUser.ToString());
 
             }
         }
@@ -618,8 +620,8 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.ProjectManager.ToString());
-                await userManager.AddToRoleAsync(defaultUser, Roles.DemoUser.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.ProjectManager.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.DemoUser.ToString());
             }
         }
         catch (Exception ex)
@@ -648,8 +650,8 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Developer.ToString());
-                await userManager.AddToRoleAsync(defaultUser, Roles.DemoUser.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Developer.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.DemoUser.ToString());
             }
         }
         catch (Exception ex)
@@ -678,8 +680,8 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Submitter.ToString());
-                await userManager.AddToRoleAsync(defaultUser, Roles.DemoUser.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Submitter.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.DemoUser.ToString());
             }
         }
         catch (Exception ex)
@@ -708,8 +710,8 @@ public static class DataUtility
             if (user == null)
             {
                 await userManager.CreateAsync(defaultUser, "Abc&123!");
-                await userManager.AddToRoleAsync(defaultUser, Roles.Submitter.ToString());
-                await userManager.AddToRoleAsync(defaultUser, Roles.DemoUser.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.Submitter.ToString());
+                await userManager.AddToRoleAsync(defaultUser, BTRoles.DemoUser.ToString());
             }
         }
         catch (Exception ex)

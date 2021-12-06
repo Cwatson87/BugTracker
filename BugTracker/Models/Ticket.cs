@@ -39,13 +39,13 @@ namespace BugTracker.Models
         public int ProjectId { get; set; }
 
         [DisplayName("Ticket Type")]
-        public string TicketTypeId { get; set; }
+        public int TicketTypeId { get; set; }
 
         [DisplayName("Ticket Status")]
-        public string TicketStatusId { get; set; }
+        public int TicketStatusId { get; set; }
 
         [DisplayName("Ticket Priority")]
-        public string TicketPriorityId { get; set; }
+        public int TicketPriorityId { get; set; }
 
         [DisplayName("Ticket Owner")]
         public string OwnerUserId { get; set; }
@@ -53,17 +53,6 @@ namespace BugTracker.Models
         [DisplayName("Developer")]
         public string DeveloperUserId { get; set; }
 
-        [DisplayName("Comments")]
-        public string CommentId { get; set; }
-
-        [DisplayName("Attachments")]
-        public string Attachements { get; set; }
-
-        [DisplayName("History")]
-        public string HistoryId { get; set; }
-
-        [DisplayName("Notifications")]
-        public string Notification { get; set; }
 
         //Navigation 
 

@@ -10,7 +10,7 @@ namespace BugTracker.Models
     public class Invite
     {
         [DisplayName("Invite")]
-        public int InviteId { get; set; }
+        public int Id { get; set; }
 
         [DisplayName("Invite Date")]
         [DataType(DataType.Date)]
@@ -23,10 +23,10 @@ namespace BugTracker.Models
         public Guid CompanyToken { get; set; }
 
         [DisplayName("Company Id")]
-        public string CompanyId { get; set; }
+        public int CompanyId { get; set; }
 
         [DisplayName("Project Id")]
-        public string ProjectId { get; set; }
+        public int ProjectId { get; set; }
 
         [DisplayName("Invitor")]
         public string InvitorId { get; set; }

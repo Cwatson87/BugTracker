@@ -1,13 +1,14 @@
-﻿using System;
+﻿using BugTracker.Data;
+using BugTracker.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BugTracker.Services.Interfaces
 {
-   public interface IBTCompanyInfoService : IBTCompanyInfoService
+   public interface IBTCompanyInfoService
     {
-
-
+        public Task<List<BTUser>> GetAllMembersAsync(int companyId);
     }
 }

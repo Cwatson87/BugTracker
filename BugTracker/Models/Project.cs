@@ -20,26 +20,30 @@ namespace BugTracker.Models
 
         [DisplayName("Description")]
         [StringLength (2500)]
-        public string description { get; set; }
+        public string Description { get; set; }
 
         [DisplayName("Created")]
         [DataType(DataType.Date)]
-        public DateTimeOffset created { get; set; }
+        public DateTimeOffset Created { get; set; }
 
         [DisplayName("Start Date")]
         [DataType(DataType.Date)]
-        public DateTimeOffset startDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
 
         [DisplayName("End Date")]
         [DataType(DataType.Date)]
-        public DateTimeOffset endDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
+
+        public int CompanyId { get; set; }
+        public int ProjectPriorityId { get; set; }
+
 
         [NotMapped]
         [DataType(DataType.Upload)]
         public IFormFile ImageFormFile { get; set; }
 
         [DisplayName("Project Image")]
-        public string projectImage { get; set; }
+        public string ProjectImage { get; set; }
 
         [DisplayName("File Extension")]
         public byte[] ImagefileData { get; set; }
@@ -50,7 +54,7 @@ namespace BugTracker.Models
         //--Navigation--//
         public virtual Company Company { get; set; }
 
-        public virtual ProjectPriority projectPriority {get; set;}
+        public virtual ProjectPriority ProjectPriority {get; set;}
 
         public virtual ICollection<BTUser> Members { get; set; }
 

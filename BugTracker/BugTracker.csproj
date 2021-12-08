@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\ViewModels\ProjectMembersViewModel.cs" />
+    <Compile Remove="Models\Enums\IBTInviteService.cs" />
   </ItemGroup>
 
   <ItemGroup>

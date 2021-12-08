@@ -29,6 +29,7 @@ namespace BugTracker.Models
         public string Description { get; set; }
 
         [NotMapped]
+        [DisplayName("Please select a file")]
         [DataType(DataType.Upload)]
         public IFormFile FormFile { get; set; }
 

@@ -10,5 +10,11 @@ namespace BugTracker.Services.Interfaces
    public interface IBTCompanyInfoService
     {
         public Task<List<BTUser>> GetAllMembersAsync(int companyId);
+
+        public Task<Company> GetCompanyInfoByIdAsync(int? companyId);
+
+        public Task<List<Project>> GetProjectsAsync(int? companyId);
+
+        public Task<List<Ticket>> GetTicketsAsync(int? companyId);
     }
 }

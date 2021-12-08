@@ -10,30 +10,42 @@ namespace BugTracker.Models
     public class Notification
     {
         public int Id { get; set; }
-        
+
+        [Required]
         [DisplayName("Title")]
-        public string NotificationId { get; set; }
+        public string Title { get; set; }
 
+        [DisplayName("Notification Type Id")]
+        public int NotificationTypeId { get; set; }
+
+        [Required]
+        [DisplayName("Message")]
         public string Message { get; set; }
-        
-        [DataType(DataType.Date)]
+
         [DisplayName("Date")]
+        [DataType(DataType.Date)]
         public DateTimeOffset Created { get; set; }
-        
-        public string Viewed { get; set; }
-        
 
-        //--Navigation--//
-        
+        [DisplayName("Has been viewed")]
+        public bool Viewed { get; set; }
+
+        [DisplayName("Ticket")]
+        public int? TicketId { get; set; }
+
+        [DisplayName("Project")]
+        public int? ProjectId { get; set; }
+
+        [DisplayName("Recipient")]
+        public string RecipientId { get; set; }
+
+        //Sender
+        public string SenderId { get; set; }
+
+        //Navigational
         public virtual NotificationType NotificationType { get; set; }
-        
         public virtual Project Project { get; set; }
-        
         public virtual Ticket Ticket { get; set; }
-       
-        public virtual BTUser Recipent { get; set; }
-
+        public virtual BTUser Recipient { get; set; }
         public virtual BTUser Sender { get; set; }
-        
     }
 }

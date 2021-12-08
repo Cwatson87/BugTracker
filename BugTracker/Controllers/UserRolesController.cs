@@ -1,19 +1,18 @@
-﻿using BugTracker.Extensions;
-using BugTracker.Models;
-using BugTracker.Models.ViewModels;
-using BugTracker.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
+using BugTracker.Models;
+using BugTracker.Models.ViewModels;
+using BugTracker.Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BugTracker.Extensions;
 
 namespace BugTracker.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")] //You have to be authenticated AND an admin.
     public class UserRolesController : Controller
     {
         private readonly IBTRolesService _rolesService;
@@ -21,33 +20,30 @@ namespace BugTracker.Controllers
         private readonly UserManager<BTUser> _userManager;
 
         public UserRolesController(IBTRolesService rolesService,
-                                   IBTCompanyInfoService companyInforService,
-                                   UserManager<BTUser> userManager)
+                                    IBTCompanyInfoService companyInfoService,
+                                    UserManager<BTUser> userManager)
         {
             _rolesService = rolesService;
-            _companyInfoService = companyInforService;
+            _companyInfoService = companyInfoService;
             _userManager = userManager;
         }
-
-
 
         [HttpGet]
         public async Task<IActionResult> ManageUserRoles()
         {
-            //Add a instance of the ViewModel
+            //Add an instance of the ViewModel as a List
             List<ManageUserRolesViewModel> model = new List<ManageUserRolesViewModel>();
 
             //Get CompanyId
             int companyId = User.Identity.GetCompanyId().Value;
 
-            //get all company users
+            //Get all company users
             List<BTUser> users = await _companyInfoService.GetAllMembersAsync(companyId);
 
-
-            //loop over the users to populate the viewmodel
+            //Loop over the users to populate the ViewModel
             // - instantiate ViewModel
-            //  - use _roleservice
-            //create multi-selects
+            // - use _rolesService
+            // - Create multi-selects
             foreach (BTUser user in users)
             {
                 ManageUserRolesViewModel viewModel = new ManageUserRolesViewModel();
@@ -57,50 +53,42 @@ namespace BugTracker.Controllers
 
                 model.Add(viewModel);
             }
-            //return  the model to the view
+
+            //Return the model to the View
+
             return View(model);
-
-
         }
 
 
-
-
-
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ManageUserRoles(ManageUserRolesViewModel member)
         {
-            int companyId = User.Identity.GetCompanyId().Value;
+            int companyId = (await _userManager.GetUserAsync(User)).CompanyId;
 
-            //Instantiate the BTUser
+            // Instantiate the BTUser
             BTUser btUser = (await _companyInfoService.GetAllMembersAsync(companyId)).FirstOrDefault(u => u.Id == member.BTUser.Id);
 
             // Get Roles for the User
-
             IEnumerable<string> roles = await _rolesService.GetUserRolesAsync(btUser);
 
             string userRole = member.SelectedRoles.FirstOrDefault();
 
-            if (!string.IsNullOrEmpty(member.SelectedRoles.FirstOrDefault()))
+            if (!string.IsNullOrEmpty(userRole))
             {
-
                 //Remove User from their roles
-                if (await _rolesService.RemoverUserFromRolesAsync(btUser, roles))
+                if (await _rolesService.RemoveUserFromRolesAsync(btUser, roles))
                 {
-                    //Grab the selected role
-
-
-
-                    // Add User to the new role
-                    await _rolesService.AddUserToRolesAsync(btUser, userRole);
+                    //Add User to the new role
+                    await _rolesService.AddUserToRoleAsync(btUser, userRole);
 
                 }
-
             }
-                //Navigate back to View
-                return RedirectToAction(nameof(ManageUserRoles));
+            //Navigate back to the View
+            return RedirectToAction(nameof(ManageUserRoles));
 
         }
+
+
     }
 }
- 

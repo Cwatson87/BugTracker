@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace BugTracker.Migrations
+namespace BugTracker.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211130210452_003")]
-    partial class _003
+    [Migration("20211206204619_Initial_0001")]
+    partial class Initial_0001
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -152,15 +152,12 @@ namespace BugTracker.Migrations
 
             modelBuilder.Entity("BugTracker.Models.Invite", b =>
                 {
-                    b.Property<int>("InviteId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("CompanyId")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("CompanyId1")
+                    b.Property<int>("CompanyId")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("CompanyToken")
@@ -193,21 +190,18 @@ namespace BugTracker.Migrations
                     b.Property<string>("Message")
                         .HasColumnType("text");
 
-                    b.Property<string>("ProjectId")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("ProjectId1")
+                    b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
-                    b.HasKey("InviteId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("CompanyId1");
+                    b.HasIndex("CompanyId");
 
                     b.HasIndex("InviteeId");
 
                     b.HasIndex("InvitorId");
 
-                    b.HasIndex("ProjectId1");
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Invites");
                 });
@@ -296,11 +290,8 @@ namespace BugTracker.Migrations
                         .HasMaxLength(2500)
                         .HasColumnType("character varying(2500)");
 
-                    b.Property<DateTimeOffset>("EndDate")
+                    b.Property<DateTimeOffset?>("EndDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<byte[]>("ImagefileData")
-                        .HasColumnType("bytea");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -310,10 +301,16 @@ namespace BugTracker.Migrations
                     b.Property<string>("ProjectImage")
                         .HasColumnType("text");
 
+                    b.Property<byte[]>("ProjectImageData")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("ProjectImageType")
+                        .HasColumnType("text");
+
                     b.Property<int>("ProjectPriorityId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTimeOffset>("StartDate")
+                    b.Property<DateTimeOffset?>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
@@ -754,7 +751,9 @@ namespace BugTracker.Migrations
                 {
                     b.HasOne("BugTracker.Models.Company", "Company")
                         .WithMany("Invites")
-                        .HasForeignKey("CompanyId1");
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BugTracker.Models.BTUser", "Invitee")
                         .WithMany()
@@ -766,7 +765,9 @@ namespace BugTracker.Migrations
 
                     b.HasOne("BugTracker.Models.Project", "Project")
                         .WithMany()
-                        .HasForeignKey("ProjectId1");
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Company");
 
